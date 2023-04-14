@@ -7,6 +7,7 @@
 #
 import chess_engine
 import pygame as py
+import  logging
 
 import ai_engine
 from enums import Player
@@ -111,7 +112,8 @@ def main():
     py.init()
     screen = py.display.set_mode((WIDTH, HEIGHT))
     clock = py.time.Clock()
-    game_state = chess_engine.game_state()
+    # game_state = chess_engine.game_state()
+
     load_images()
     running = True
     square_selected = ()  # keeps track of the last selected square
@@ -123,6 +125,8 @@ def main():
     game_state = chess_engine.game_state()
     if human_player is 'b':
         ai_move = ai.minimax_black(game_state, 3, -100000, 100000, True, Player.PLAYER_1)
+        # log info what color start the first move
+        logging.info("The first player to move is: " + str(Player.PLAYER_1))
         game_state.move_piece(ai_move[0], ai_move[1], True)
 
     while running:
@@ -147,6 +151,7 @@ def main():
                             player_clicks = []
                             valid_moves = []
                         else:
+                            logging.info("The first player to move is: " + str(game_state.whose_turn()))
                             game_state.move_piece((player_clicks[0][0], player_clicks[0][1]),
                                                   (player_clicks[1][0], player_clicks[1][1]), False)
                             square_selected = ()
@@ -155,6 +160,7 @@ def main():
 
                             if human_player is 'w':
                                 ai_move = ai.minimax_white(game_state, 3, -100000, 100000, True, Player.PLAYER_2)
+
                                 game_state.move_piece(ai_move[0], ai_move[1], True)
                             elif human_player is 'b':
                                 ai_move = ai.minimax_black(game_state, 3, -100000, 100000, True, Player.PLAYER_1)
@@ -167,7 +173,7 @@ def main():
                 if e.key == py.K_r:
                     game_over = False
                     game_state = chess_engine.game_state()
-                    valid_moves = []
+                    #valid_moves = []
                     square_selected = ()
                     player_clicks = []
                     valid_moves = []
@@ -186,6 +192,7 @@ def main():
             draw_text(screen, "White wins.")
         elif endgame == 2:
             game_over = True
+            logging.info("The game ended in a stalemate.")
             draw_text(screen, "Stalemate.")
 
         clock.tick(MAX_FPS)
