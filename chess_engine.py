@@ -4,6 +4,8 @@
 #
 # Note: move log class inspired by Eddie Sharick
 #
+import logging
+
 from Piece import Rook, Knight, Bishop, Queen, King, Pawn
 from enums import Player
 
@@ -19,12 +21,14 @@ r \ c     0           1           2           3           4           5         
 7   [(r=7, c=0), (r=7, c=1), (r=7, c=2), (r=7, c=3), (r=7, c=4), (r=7, c=5), (r=7, c=6), (r=7, c=7)]
 '''
 
-
 # TODO: Flip the board according to the player
 # TODO: Pawns are usually indicated by no letters
 # TODO: stalemate
 # TODO: move logs - fix king castle boolean update
 # TODO: change move method argument about is_ai into something more elegant
+
+CHECK_COUNTER =0
+
 class game_state:
     # Initialize 2D array to represent the chess board
     def __init__(self):
@@ -220,10 +224,10 @@ class game_state:
         all_white_moves = self.get_all_legal_moves(Player.PLAYER_1)
         all_black_moves = self.get_all_legal_moves(Player.PLAYER_2)
         if self._is_check and self.whose_turn() and not all_white_moves:
-            print("white lost")
+            #print("white lost")
             return 0
         elif self._is_check and not self.whose_turn() and not all_black_moves:
-            print("black lost")
+            #print("black lost")
             return 1
         elif not all_white_moves and not all_black_moves:
             return 2
@@ -854,7 +858,11 @@ class game_state:
                     # self._is_check = True
                     _checks.append((king_location_row + row_change[i], king_location_col + col_change[i]))
         # print([_checks, _pins, _pins_check])
-        return [_pins_check, _pins, _pins_check]
+        if _checks!= []:
+            logging.info("CHECK")
+            #print("CHECK")
+
+        return [_checks, _pins, _pins_check]
 
 
 class chess_move():
