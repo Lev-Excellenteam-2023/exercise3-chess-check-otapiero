@@ -1,7 +1,6 @@
 from unittest import TestCase, mock
 
 import Piece
-import chess_engine
 from Piece import Knight
 from enums import Player
 

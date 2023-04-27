@@ -1,5 +1,4 @@
-from unittest import TestCase , mock
-import chess_engine
+from unittest import TestCase, mock
 import Piece
 from enums import Player
 
